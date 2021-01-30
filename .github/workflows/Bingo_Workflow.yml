@@ -18,7 +18,7 @@ jobs:
           LINTER_RULES_PATH: /
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.js
           VALIDATE_JAVASCRIPT_ES: true
-          SYNTAX_STATUS: ${{ success() }}
+          SYNTAX_STATUS: ${{ false }}
 
   
   test_execution_job:
@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: Checkout Code
         env: 
-          EXECUTION_STATUS: ${{ success() }}
+          EXECUTION_STATUS: ${{ false }}
         uses: actions/checkout@v2
       - name: Ejecutar tests
         run: |
@@ -47,7 +47,7 @@ jobs:
           npm run buildDev
       - name: artifact upload
         env: 
-          BUILD_STATUS: ${{ success() }}
+          BUILD_STATUS: ${{ false }}
         uses: actions/upload-artifact@v2
         with: 
           name: build
@@ -64,7 +64,7 @@ jobs:
         name: build
     - name: Deploy Artifact
       env: 
-        DEPLOY_STATUS: ${{ success() }}
+        DEPLOY_STATUS: ${{ false }}
       uses: dswistowski/surge-sh-action@v1
       with:
         domain: deployBingoGHActions.surge.sh
