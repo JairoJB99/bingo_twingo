@@ -19,7 +19,6 @@ jobs:
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.js
           VALIDATE_JAVASCRIPT_ES: true
           SYNTAX_STATUS: ${{ false }}
-
   
   test_execution_job:
     name: test_execution_job
