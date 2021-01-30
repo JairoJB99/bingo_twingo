@@ -1,0 +1,18 @@
+name: "PRINT values"
+description: "print values"
+inputs:
+  SYNTAX_STATUS:
+    description: "Syntax status"
+    required: true
+  EXECUTION_STATUS:
+    description: "Execution status"
+    required: true
+  BUILD_STATUS:
+    description: "Build status"
+    required: true
+  DEPLOY_STATUS:
+    description: "Deploy status"
+    required: true  
+runs:
+  using: "node12"
+  main: "dist/index.js"
