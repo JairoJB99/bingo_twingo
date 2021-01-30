@@ -1,0 +1,20 @@
+name: main_workflow
+on: 
+ push: 
+  branches:
+   - githubActions_improvement
+jobs:
+ syntax_check_job:
+   name: syntax_check_job
+   runs-on: ubuntu-latest
+   steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: LinterExecution
+      uses: github/super-linter@v3
+      env:
+          DEFAULT_BRANCH: githubActions_improvement
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINTER_RULES_PATH: /
+          JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.json
+          VALIDATE_JAVASCRIPT_ES: true
