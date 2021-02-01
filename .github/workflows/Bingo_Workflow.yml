@@ -19,6 +19,8 @@ jobs:
           JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.js
           VALIDATE_JAVASCRIPT_ES: true
           SYNTAX_STATUS: ${{ false }}
+    outputs:  
+        output: ${{ job.status }}
   
   test_execution_job:
     name: test_execution_job
@@ -32,6 +34,8 @@ jobs:
         run: |
           npm i
           npm run test
+    outputs:  
+        output: ${{ job.status }}      
   
   build_statics_job:
     name: build_statics_job
@@ -51,6 +55,8 @@ jobs:
         with: 
           name: build
           path: ./dist
+    outputs:  
+        output: ${{ job.status }}      
   deploy_job:
     name: deploy_job
     runs-on: ubuntu-latest
@@ -69,10 +75,13 @@ jobs:
         project: .
         login: ${{secrets.LOGIN }}
         token: ${{secrets.TOKEN }}
+    outputs:  
+        output: ${{ job.status }}    
   notification_job:
     name: notification_job
-    needs: deploy_job
+    needs: [syntax_check_job, test_execution_job, build_statics_job, deploy_job]
     runs-on: ubuntu-latest
+    if: ${{ always() }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -80,7 +89,7 @@ jobs:
       - name: Send message
         uses: ./.github/actions/
         with:
-          SYNTAX_STATUS: $SYNTAX_STATUS
-          EXECUTION_STATUS: $EXECUTION_STATUS
-          BUILD_STATUS: $BUILD_STATUS
-          DEPLOY_STATUS: $DEPLOY_STATUS
+          SYNTAX_STATUS: ${{needs.syntax_check_job.outputs.output}}
+          EXECUTION_STATUS: ${{needs.test_execution_job.outputs.output}}
+          BUILD_STATUS: ${{needs.build_statics_job.outputs.output}}
+          DEPLOY_STATUS: ${{needs.deploy_job.outputs.output}}
