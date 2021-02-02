@@ -1,6 +1,21 @@
 name: "PRINT values"
 description: "print values"
 inputs:
+  author:
+    description: "Email author"
+    required: true
+  password:
+    description: "Email password"
+    required: true
+  recipients_mail:
+    description: "Email receiver"
+    required: true
+  branch:
+    description: "Branch name"
+    required: true
+  workflow:
+    description: "Workflow name"
+    required: true
   SYNTAX_STATUS:
     description: "Syntax status"
     required: true
@@ -12,7 +27,10 @@ inputs:
     required: true
   DEPLOY_STATUS:
     description: "Deploy status"
-    required: true  
+    required: true
+outputs:
+  response:
+    description: "Response"
 runs:
   using: "node12"
   main: "dist/index.js"

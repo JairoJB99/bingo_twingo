@@ -86,9 +86,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Send message
+      - name: Send email
         uses: ./.github/actions/
         with:
+          author: ${{ secrets.AUTHOR }}
+          password: ${{ secrets.PASSWORD }}
+          recipients_mail: ${{ secrets.RECIPIENTS_MAIL }}
+          branch: ${{ github.ref }}
+          workflow: ${{ github.workflow }}
           SYNTAX_STATUS: ${{needs.syntax_check_job.outputs.output}}
           EXECUTION_STATUS: ${{needs.test_execution_job.outputs.output}}
           BUILD_STATUS: ${{needs.build_statics_job.outputs.output}}
