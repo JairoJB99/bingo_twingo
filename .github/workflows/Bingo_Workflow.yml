@@ -98,3 +98,21 @@ jobs:
           EXECUTION_STATUS: ${{needs.test_execution_job.outputs.output}}
           BUILD_STATUS: ${{needs.build_statics_job.outputs.output}}
           DEPLOY_STATUS: ${{needs.deploy_job.outputs.output}}
+  update_readme_job:
+    name: Set Date at README
+    runs-on: ubuntu-latest
+    needs: deploy_job
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Set Date README.md
+        run: |
+          sed -i '$d' README.md
+          echo -e "\n - Última versión desplegada el día: `date`" >> README.md
+      - name: Save Date README
+        run: |
+          git config user.name ${{ secrets.USERNAME_GIT }}
+          git config user.email ${{ secrets.EMAIL_GIT }}
+          git add . 
+          git commit -m "Update README Date"
+          git push origin githubActions_improvement
